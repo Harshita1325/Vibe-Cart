@@ -1,0 +1,19 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const { init } = require('./db');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+init();
+
+app.use('/api/products', require('./routes/products'));
+app.use('/api/cart', require('./routes/cart'));
+
+// health
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Backend running at http://localhost:${PORT}`));
